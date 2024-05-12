@@ -1,5 +1,5 @@
 from hypothesis import given
-from hypothesis.strategies import text
+import hypothesis.strategies as st
 
 """codes"""
 def encode(input_string):
@@ -33,10 +33,24 @@ if __name__ == "__main__":
     print(res)
     print(decode(res))
 """
-@given(text())
+@given(st.text())
 def test(s):
     assert decode(encode(s)) == s
 
+"""关于hypothesis.strategy使用"""
+@given(st.integers(), st.integers())
+def test_sub(x, y):
+    assert (x + y) - y == x
+
+@given(st.lists(st.integers()))
+def test_reverse_twice(xs):
+    ys = list(xs)
+    ys.reverse()
+    ys.reverse()
+    assert xs == ys
+
 if __name__ == "__main__":
     test()
-    
+    test_sub()
+    test_reverse_twice()
+
